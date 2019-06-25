@@ -16,8 +16,10 @@ app.get('/', function (req, res) {
   res.redirect('/posts');
 });
 app.get('/posts', function (req, res) {
-  _axios["default"].get('http://medium.com/feed/@oldirony').then(function (response) {
+  _axios["default"].get('http://medium.com/feed/@iprashant2402').then(function (response) {
+    console.log(response.data);
     (0, _xml2js.parseString)(response.data, function (err, res2) {
+      console.log(res2.rss.channel);
       res.send(JSON.stringify(res2.rss.channel[0].item));
     });
   })["catch"](function (error) {
