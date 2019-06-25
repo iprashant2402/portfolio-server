@@ -12,16 +12,13 @@ app.get('/', (req,res) => {
 });
 
 app.get('/posts', (req, res) => {
-    /*axios.get('http://medium.scom/feed/@oldirony').then(function(response){    
+    axios.get('http://medium.scom/feed/@oldirony').then(function(response){    
         parseString(response.data,(err,res2)=>{
             res.send(JSON.stringify(res2.rss.channel[0].item));
         })
     }).catch(function(error){
         console.log(error);
-    });*/
-    res.send("Hello World");
+    });
   });
 
-app.listen(process.env.PORT || 3000,() => {
-    console.log("Listening");
-});
+app.listen(process.env.PORT || 3000);
