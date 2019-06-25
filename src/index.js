@@ -12,7 +12,7 @@ app.get('/', (req,res) => {
 });
 
 app.get('/posts', (req, res) => {
-    axios.get('http://medium.scom/feed/@oldirony').then(function(response){    
+    axios.get('http://medium.com/feed/@oldirony').then(function(response){    
         parseString(response.data,(err,res2)=>{
             res.send(JSON.stringify(res2.rss.channel[0].item));
         })
