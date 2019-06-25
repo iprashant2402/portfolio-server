@@ -1,9 +1,8 @@
-import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
 import {parseString} from 'xml2js';
-const PORT = process.env.PORT || '3000';
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
