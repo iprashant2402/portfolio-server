@@ -8,6 +8,8 @@ var _axios = _interopRequireDefault(require("axios"));
 
 var _xml2js = require("xml2js");
 
+var _expoServerSdk = _interopRequireDefault(require("expo-server-sdk"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var app = (0, _express["default"])();
@@ -26,4 +28,9 @@ app.get('/posts', function (req, res) {
     console.log(error);
   });
 });
-app.listen(process.env.PORT || 3000);
+app.get('/newOrderNotification', function (req, res) {
+  res.send("NEW ORDER");
+});
+app.listen(process.env.PORT || 3000, function () {
+  console.log("Server listening on port 3000");
+});

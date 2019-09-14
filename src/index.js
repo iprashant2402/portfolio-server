@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
 import {parseString} from 'xml2js';
+import Expo from 'expo-server-sdk';
 
 const app = express();
 
@@ -23,4 +24,10 @@ app.get('/posts', (req, res) => {
     });
   });
 
-app.listen(process.env.PORT || 3000);
+app.get('/newOrderNotification',(req,res)=>{
+    res.send("NEW ORDER");
+});
+
+app.listen(process.env.PORT || 3000,()=>{
+    console.log("Server listening on port 3000");
+});
