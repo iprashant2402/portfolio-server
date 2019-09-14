@@ -24,6 +24,10 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+require("babel-core/register");
+
+require("babel-polyfill");
+
 var app = (0, _express["default"])();
 app.use((0, _cors["default"])());
 app.get('/', function (req, res) {
@@ -46,10 +50,12 @@ app.get('/newOrderNotification', function (req, res) {
   messages.push({
     to: 'ExponentPushToken[9z8tQaGU2mkQiLAv5NLS7b]',
     sound: 'default',
-    body: 'This is a test notification',
+    title: 'NEW ORDER',
+    body: 'New order has been placed.',
     data: {
-      someData: 'data'
-    }
+      somedata: 'new order'
+    },
+    priority: 'high'
   });
   var chunks = expo.chunkPushNotifications(messages);
   var tickets = [];
@@ -57,7 +63,7 @@ app.get('/newOrderNotification', function (req, res) {
   _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee() {
-    var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, chunk, ticketChunk;
+    var _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, chunk, ticketChunk, _i, _tickets, ticket;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -139,12 +145,20 @@ app.get('/newOrderNotification', function (req, res) {
             return _context.finish(27);
 
           case 35:
+            for (_i = 0, _tickets = tickets; _i < _tickets.length; _i++) {
+              ticket = _tickets[_i];
+              console.log(ticket);
+            }
+
+          case 36:
           case "end":
             return _context.stop();
         }
       }
     }, _callee, null, [[3, 23, 27, 35], [7, 15], [28,, 30, 34]]);
   }))();
+
+  res.send('NEW ORDER');
 });
 app.listen(process.env.PORT || 3000, function () {
   console.log("Server listening on port 3000");

@@ -3,6 +3,8 @@ import cors from 'cors';
 import axios from 'axios';
 import {parseString} from 'xml2js';
 import Expo from 'expo-server-sdk';
+require("babel-core/register");
+require("babel-polyfill");
 
 const app = express();
 
@@ -30,8 +32,10 @@ app.get('/newOrderNotification',(req,res)=>{
     messages.push({
         to : 'ExponentPushToken[9z8tQaGU2mkQiLAv5NLS7b]',
         sound : 'default',
-        body : 'This is a test notification',
-        data : {someData : 'data'}
+        title : 'NEW ORDER',
+        body : 'New order has been placed.',
+        data : {somedata : 'new order'},
+        priority : 'high',
     });
     let chunks = expo.chunkPushNotifications(messages);
     let tickets = [];
@@ -52,7 +56,14 @@ app.get('/newOrderNotification',(req,res)=>{
       console.error(error);
     }
   }
+
+  for (let ticket of tickets){
+      console.log(ticket);
+  }
 })();
+
+
+res.send('NEW ORDER');
 
 });
 
