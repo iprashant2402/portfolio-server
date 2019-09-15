@@ -37,6 +37,14 @@ app.get('/newOrderNotification',(req,res)=>{
         data : {somedata : 'new order'},
         priority : 'high',
     });
+    messages.push({
+        to : 'ExponentPushToken[jHNpOaLviMHOkYQWi-3sQV]',
+        sound : 'default',
+        title : 'NEW ORDER',
+        body : 'New order has been placed.',
+        data : {somedata : 'new order'},
+        priority : 'high',
+    });
     let chunks = expo.chunkPushNotifications(messages);
     let tickets = [];
     (async () => {
