@@ -30,6 +30,14 @@ app.get('/newOrderNotification',(req,res)=>{
     let expo = new Expo();
     let messages = [];
     messages.push({
+        to : 'ExponentPushToken[aFQroTEV9QuXrjY6zAFwza]',
+        sound : 'default',
+        title : 'NEW ORDER',
+        body : 'New order has been placed.',
+        data : {somedata : 'new order'},
+        priority : 'high',
+    });
+    messages.push({
         to : 'ExponentPushToken[9z8tQaGU2mkQiLAv5NLS7b]',
         sound : 'default',
         title : 'NEW ORDER',
