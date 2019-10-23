@@ -24,17 +24,23 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+var bodyParser = require("body-parser");
+
 require("babel-core/register");
 
 require("babel-polyfill");
 
 var app = (0, _express["default"])();
 app.use((0, _cors["default"])());
-app.get('/', function (req, res) {
-  res.redirect('/posts');
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+app.use(bodyParser.json());
+app.get("/", function (req, res) {
+  res.redirect("/posts");
 });
-app.get('/posts', function (req, res) {
-  _axios["default"].get('http://medium.com/feed/@iprashant2402').then(function (response) {
+app.get("/posts", function (req, res) {
+  _axios["default"].get("http://medium.com/feed/@iprashant2402").then(function (response) {
     console.log(response.data);
     (0, _xml2js.parseString)(response.data, function (err, res2) {
       console.log(res2.rss.channel);
@@ -44,18 +50,38 @@ app.get('/posts', function (req, res) {
     console.log(error);
   });
 });
-app.get('/newOrderNotification', function (req, res) {
+app.get("/newOrderNotification", function (req, res) {
   var expo = new _expoServerSdk["default"]();
   var messages = [];
   messages.push({
-    to: 'ExponentPushToken[9z8tQaGU2mkQiLAv5NLS7b]',
-    sound: 'default',
-    title: 'NEW ORDER',
-    body: 'New order has been placed.',
+    to: "ExponentPushToken[aFQroTEV9QuXrjY6zAFwza]",
+    sound: "default",
+    title: "NEW ORDER",
+    body: "New order has been placed.",
     data: {
-      somedata: 'new order'
+      somedata: "new order"
     },
-    priority: 'high'
+    priority: "high"
+  });
+  messages.push({
+    to: "ExponentPushToken[9z8tQaGU2mkQiLAv5NLS7b]",
+    sound: "default",
+    title: "NEW ORDER",
+    body: "New order has been placed.",
+    data: {
+      somedata: "new order"
+    },
+    priority: "high"
+  });
+  messages.push({
+    to: "ExponentPushToken[jHNpOaLviMHOkYQWi-3sQV]",
+    sound: "default",
+    title: "NEW ORDER",
+    body: "New order has been placed.",
+    data: {
+      somedata: "new order"
+    },
+    priority: "high"
   });
   var chunks = expo.chunkPushNotifications(messages);
   var tickets = [];
@@ -158,7 +184,130 @@ app.get('/newOrderNotification', function (req, res) {
     }, _callee, null, [[3, 23, 27, 35], [7, 15], [28,, 30, 34]]);
   }))();
 
-  res.send('NEW ORDER');
+  res.send("NEW ORDER");
+});
+app.post("/selectedUsers", function (req, res) {
+  var expo = new _expoServerSdk["default"]();
+  var messages = [];
+  var postTokens = req.body.tokens;
+  var postTitle = req.body.title;
+  var postContent = req.body.content;
+  postTokens.forEach(function (item) {
+    if (_expoServerSdk["default"].isExpoPushToken(item)) {
+      messages.push({
+        to: item,
+        sound: "default",
+        title: postTitle,
+        body: postContent,
+        data: {
+          somedata: "new order"
+        },
+        priority: "high"
+      });
+    }
+  });
+  var chunks = expo.chunkPushNotifications(messages);
+  var tickets = [];
+
+  _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee2() {
+    var _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, chunk, ticketChunk, _i2, _tickets2, ticket;
+
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            // Send the chunks to the Expo push notification service. There are
+            // different strategies you could use. A simple one is to send one chunk at a
+            // time, which nicely spreads the load out over time:
+            _iteratorNormalCompletion2 = true;
+            _didIteratorError2 = false;
+            _iteratorError2 = undefined;
+            _context2.prev = 3;
+            _iterator2 = chunks[Symbol.iterator]();
+
+          case 5:
+            if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
+              _context2.next = 21;
+              break;
+            }
+
+            chunk = _step2.value;
+            _context2.prev = 7;
+            _context2.next = 10;
+            return expo.sendPushNotificationsAsync(chunk);
+
+          case 10:
+            ticketChunk = _context2.sent;
+            console.log(ticketChunk);
+            tickets.push.apply(tickets, _toConsumableArray(ticketChunk)); // NOTE: If a ticket contains an error code in ticket.details.error, you
+            // must handle it appropriately. The error codes are listed in the Expo
+            // documentation:
+            // https://docs.expo.io/versions/latest/guides/push-notifications#response-format
+
+            _context2.next = 18;
+            break;
+
+          case 15:
+            _context2.prev = 15;
+            _context2.t0 = _context2["catch"](7);
+            console.error(_context2.t0);
+
+          case 18:
+            _iteratorNormalCompletion2 = true;
+            _context2.next = 5;
+            break;
+
+          case 21:
+            _context2.next = 27;
+            break;
+
+          case 23:
+            _context2.prev = 23;
+            _context2.t1 = _context2["catch"](3);
+            _didIteratorError2 = true;
+            _iteratorError2 = _context2.t1;
+
+          case 27:
+            _context2.prev = 27;
+            _context2.prev = 28;
+
+            if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+              _iterator2["return"]();
+            }
+
+          case 30:
+            _context2.prev = 30;
+
+            if (!_didIteratorError2) {
+              _context2.next = 33;
+              break;
+            }
+
+            throw _iteratorError2;
+
+          case 33:
+            return _context2.finish(30);
+
+          case 34:
+            return _context2.finish(27);
+
+          case 35:
+            for (_i2 = 0, _tickets2 = tickets; _i2 < _tickets2.length; _i2++) {
+              ticket = _tickets2[_i2];
+              console.log(ticket);
+            }
+
+          case 36:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[3, 23, 27, 35], [7, 15], [28,, 30, 34]]);
+  }))();
+
+  res.send("YEAH");
 });
 app.listen(process.env.PORT || 3000, function () {
   console.log("Server listening on port 3000");
