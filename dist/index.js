@@ -54,7 +54,27 @@ app.get("/newOrderNotification", function (req, res) {
   var expo = new _expoServerSdk["default"]();
   var messages = [];
   messages.push({
-    to: "ExponentPushToken[aFQroTEV9QuXrjY6zAFwza]",
+    to: "ExponentPushToken[liwdDpDyhZfoznrnPbkNOJ]",
+    sound: "default",
+    title: "NEW ORDER",
+    body: "New order has been placed.",
+    data: {
+      somedata: "new order"
+    },
+    priority: "high"
+  });
+  messages.push({
+    to: "ExponentPushToken[fWAPboPn-xWMUBikgE-zIj]",
+    sound: "default",
+    title: "NEW ORDER",
+    body: "New order has been placed.",
+    data: {
+      somedata: "new order"
+    },
+    priority: "high"
+  });
+  messages.push({
+    to: "ExponentPushToken[HlFrpiGJeo9bo7nUKp93k-]",
     sound: "default",
     title: "NEW ORDER",
     body: "New order has been placed.",
