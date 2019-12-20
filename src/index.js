@@ -52,7 +52,7 @@ app.get("/newOrderNotification", (req, res) => {
     priority: "high"
   });
   messages.push({
-    to: "ExponentPushToken[HlFrpiGJeo9bo7nUKp93k-]",
+    to: "ExponentPushToken[lHaecrNxwnG10l1aJPXJK6]",
     sound: "default",
     title: "NEW ORDER",
     body: "New order has been placed.",
