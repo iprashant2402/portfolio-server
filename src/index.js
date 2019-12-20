@@ -35,6 +35,15 @@ app.get("/posts", (req, res) => {
 app.get("/newOrderNotification", (req, res) => {
   let expo = new Expo();
   let messages = [];
+  
+  messages.push({
+    to: "ExponentPushToken[lHaecrNxwnG10I1aJPXJK6]",
+    sound: "default",
+    title: "NEW ORDER",
+    body: "New order has been placed.",
+    data: { somedata: "new order" },
+    priority: "high"
+  });
   messages.push({
     to: "ExponentPushToken[liwdDpDyhZfoznrnPbkNOJ]",
     sound: "default",
@@ -45,14 +54,6 @@ app.get("/newOrderNotification", (req, res) => {
   });
   messages.push({
     to: "ExponentPushToken[fWAPboPn-xWMUBikgE-zIj]",
-    sound: "default",
-    title: "NEW ORDER",
-    body: "New order has been placed.",
-    data: { somedata: "new order" },
-    priority: "high"
-  });
-  messages.push({
-    to: "ExponentPushToken[lHaecrNxwnG10l1aJPXJK6]",
     sound: "default",
     title: "NEW ORDER",
     body: "New order has been placed.",
