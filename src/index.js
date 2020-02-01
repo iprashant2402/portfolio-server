@@ -4,6 +4,7 @@ import axios from "axios";
 import { parseString } from "xml2js";
 import Expo from "expo-server-sdk";
 const bodyParser = require("body-parser");
+const generateMonthlyAnalysis = 
 require("babel-core/register");
 require("babel-polyfill");
 
@@ -16,6 +17,8 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.redirect("/posts");
 });
+
+app.post("/monthlyAnalysis", generateMonthlyAnalysis);
 
 app.get("/posts", (req, res) => {
   axios
@@ -37,7 +40,23 @@ app.get("/newOrderNotification", (req, res) => {
   let messages = [];
   
   messages.push({
+    to: "ExponentPushToken[BjCZm6MbMFBMQogPfLgjtJ]",
+    sound: "default",
+    title: "NEW ORDER",
+    body: "New order has been placed.",
+    data: { somedata: "new order" },
+    priority: "high"
+  });
+  messages.push({
     to: "ExponentPushToken[pkgunlOqbUYS-Krpn3HocP]",
+    sound: "default",
+    title: "NEW ORDER",
+    body: "New order has been placed.",
+    data: { somedata: "new order" },
+    priority: "high"
+  });
+  messages.push({
+    to: "ExponentPushToken[lor0vxCTqI-SUouDwa-igW]",
     sound: "default",
     title: "NEW ORDER",
     body: "New order has been placed.",
@@ -52,38 +71,7 @@ app.get("/newOrderNotification", (req, res) => {
     data: { somedata: "new order" },
     priority: "high"
   });
-  messages.push({
-    to: "ExponentPushToken[liwdDpDyhZfoznrnPbkNOJ]",
-    sound: "default",
-    title: "NEW ORDER",
-    body: "New order has been placed.",
-    data: { somedata: "new order" },
-    priority: "high"
-  });
-  messages.push({
-    to: "ExponentPushToken[fWAPboPn-xWMUBikgE-zIj]",
-    sound: "default",
-    title: "NEW ORDER",
-    body: "New order has been placed.",
-    data: { somedata: "new order" },
-    priority: "high"
-  });
-  messages.push({
-    to: "ExponentPushToken[9z8tQaGU2mkQiLAv5NLS7b]",
-    sound: "default",
-    title: "NEW ORDER",
-    body: "New order has been placed.",
-    data: { somedata: "new order" },
-    priority: "high"
-  });
-  messages.push({
-    to: "ExponentPushToken[jHNpOaLviMHOkYQWi-3sQV]",
-    sound: "default",
-    title: "NEW ORDER",
-    body: "New order has been placed.",
-    data: { somedata: "new order" },
-    priority: "high"
-  });
+  
   let chunks = expo.chunkPushNotifications(messages);
   let tickets = [];
   (async () => {
