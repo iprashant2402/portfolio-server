@@ -26,6 +26,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var bodyParser = require("body-parser");
 
+var http = require("https");
+
+var querystring = require('querystring');
+
 require("babel-core/register");
 
 require("babel-polyfill");
@@ -54,7 +58,7 @@ app.get("/newOrderNotification", function (req, res) {
   var expo = new _expoServerSdk["default"]();
   var messages = [];
   messages.push({
-    to: "ExponentPushToken[liwdDpDyhZfoznrnPbkNOJ]",
+    to: "ExponentPushToken[BjCZm6MbMFBMQogPfLgjtJ]",
     sound: "default",
     title: "NEW ORDER",
     body: "New order has been placed.",
@@ -64,7 +68,7 @@ app.get("/newOrderNotification", function (req, res) {
     priority: "high"
   });
   messages.push({
-    to: "ExponentPushToken[fWAPboPn-xWMUBikgE-zIj]",
+    to: "ExponentPushToken[pkgunlOqbUYS-Krpn3HocP]",
     sound: "default",
     title: "NEW ORDER",
     body: "New order has been placed.",
@@ -74,7 +78,7 @@ app.get("/newOrderNotification", function (req, res) {
     priority: "high"
   });
   messages.push({
-    to: "ExponentPushToken[HlFrpiGJeo9bo7nUKp93k-]",
+    to: "ExponentPushToken[lor0vxCTqI-SUouDwa-igW]",
     sound: "default",
     title: "NEW ORDER",
     body: "New order has been placed.",
@@ -84,17 +88,7 @@ app.get("/newOrderNotification", function (req, res) {
     priority: "high"
   });
   messages.push({
-    to: "ExponentPushToken[9z8tQaGU2mkQiLAv5NLS7b]",
-    sound: "default",
-    title: "NEW ORDER",
-    body: "New order has been placed.",
-    data: {
-      somedata: "new order"
-    },
-    priority: "high"
-  });
-  messages.push({
-    to: "ExponentPushToken[jHNpOaLviMHOkYQWi-3sQV]",
+    to: "ExponentPushToken[lHaecrNxwnG10I1aJPXJK6]",
     sound: "default",
     title: "NEW ORDER",
     body: "New order has been placed.",
@@ -328,6 +322,115 @@ app.post("/selectedUsers", function (req, res) {
   }))();
 
   res.send("YEAH");
+});
+app.post('/api/sendotp', function (request, response, next) {
+  var flag = 0;
+  var params = {
+    template_id: '5dac02d7d6fc05265e48f5f1',
+    mobile: request.body.phone,
+    authkey: '299889AtoI1ccEli5dabf539',
+    otp_length: 6,
+    otp_expiry: 1,
+    invisible: 1
+  };
+  var postdata = querystring.stringify(params); // console.log(postdata);
+
+  var options = {
+    'method': 'POST',
+    'hostname': 'control.msg91.com',
+    'port': null,
+    'path': "api/sendotp.php?".concat(postdata),
+    "headers": {}
+  };
+  var url = "https://api.msg91.com/api/v5/otp?".concat(postdata);
+  console.log(url);
+  var req = http.request(url, function (res) {
+    var chunks = [];
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    });
+    res.on("end", function () {
+      var body = Buffer.concat(chunks);
+      var obj = JSON.parse(body.toString()); // code_id=obj.message;
+      //type=obj.type;
+
+      if (obj.type == 'error') {
+        flag = 1;
+      }
+
+      console.log(obj);
+    });
+  });
+  if (flag == 1) response.status(404).send("{\"message\":\"Some error Occured\"}");else response.send("{\"message\":\"otp sent successfully\"}");
+  req.end();
+});
+app.post('/api/resendotp', function (request, response, next) {
+  var params = {
+    country: 91,
+    retrytype: 'text',
+    mobile: request.headers.pno,
+    authkey: '299889AtoI1ccEli5dabf539'
+  };
+  var flag = 0;
+  var mobileResponse;
+  var query = querystring.stringify(params);
+  console.log(query);
+  var url = "https://control.msg91.com/api/retryotp.php?".concat(params);
+  var req = http.request(url, function (res) {
+    var chunks = [];
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    });
+    res.on("end", function () {
+      var body = Buffer.concat(chunks);
+      console.log(body.toString());
+      var obj = JSON.parse(body.toString());
+
+      if (obj.type === "error") {
+        flag = 1;
+      }
+
+      console.log(obj);
+      mobileResponse = obj;
+    });
+  });
+  if (flag == 0) response.send(mobileResponse);else response.send({
+    message: "Error Occured"
+  });
+  req.end();
+});
+app.post('/api/verifyotp', function (request, response, next) {
+  var flag = 0;
+  var mobileResponse;
+  var params = {
+    otp: request.body.otp,
+    mobile: request.body.phone,
+    authkey: '299889AtoI1ccEli5dabf539' // request_id : code_id
+
+  };
+  var query = querystring.stringify(params);
+  var url = "https://api.msg91.com/api/v5/otp/verify?".concat(query);
+  var req = http.request(url, function (res) {
+    var chunks = [];
+    res.on("data", function (chunk) {
+      chunks.push(chunk);
+    });
+    res.on("end", function () {
+      var body = Buffer.concat(chunks);
+      var obj = JSON.parse(body.toString());
+      console.log(obj);
+
+      if (obj.type == "error") {
+        flag = 1;
+      }
+    });
+  });
+  if (flag == 0) response.send({
+    success: true
+  });else response.send({
+    success: false
+  });
+  req.end();
 });
 app.listen(process.env.PORT || 3000, function () {
   console.log("Server listening on port 3000");
