@@ -108,6 +108,79 @@ app.get("/newOrderNotification", (req, res) => {
   res.send("NEW ORDER");
 });
 
+app.get("/newMessageNotification", (req, res) => {
+  let expo = new Expo();
+  let messages = [];
+  
+  messages.push({
+    to: "ExponentPushToken[-uOKZ5IW-0jIsQGZ_Oi2lw]",
+    sound: "default",
+    title: "NEW MESSAGE",
+    body: "New MESSAGE has been placed.",
+    data: { somedata: "new MESSAGE" },
+    priority: "high"
+  });
+  messages.push({
+    to: "ExponentPushToken[BjCZm6MbMFBMQogPfLgjtJ]",
+    sound: "default",
+    title: "NEW MESSAGE",
+    body: "New MESSAGE has been placed.",
+    data: { somedata: "new MESSAGE" },
+    priority: "high"
+  });
+  messages.push({
+    to: "ExponentPushToken[pkgunlOqbUYS-Krpn3HocP]",
+    sound: "default",
+    title: "NEW MESSAGE",
+    body: "New MESSAGE has been placed.",
+    data: { somedata: "new MESSAGE" },
+    priority: "high"
+  });
+  messages.push({
+    to: "ExponentPushToken[lor0vxCTqI-SUouDwa-igW]",
+    sound: "default",
+    title: "NEW MESSAGE",
+    body: "New MESSAGE has been placed.",
+    data: { somedata: "new MESSAGE" },
+    priority: "high"
+  });
+  messages.push({
+    to: "ExponentPushToken[lHaecrNxwnG10I1aJPXJK6]",
+    sound: "default",
+    title: "NEW MESSAGE",
+    body: "New message has been placed.",
+    data: { somedata: "new MESSAGE" },
+    priority: "high"
+  });
+  
+  let chunks = expo.chunkPushNotifications(messages);
+  let tickets = [];
+  (async () => {
+    // Send the chunks to the Expo push notification service. There are
+    // different strategies you could use. A simple one is to send one chunk at a
+    // time, which nicely spreads the load out over time:
+    for (let chunk of chunks) {
+      try {
+        let ticketChunk = await expo.sendPushNotificationsAsync(chunk);
+        console.log(ticketChunk);
+        tickets.push(...ticketChunk);
+        // NOTE: If a ticket contains an error code in ticket.details.error, you
+        // must handle it appropriately. The error codes are listed in the Expo
+        // documentation:
+        // https://docs.expo.io/versions/latest/guides/push-notifications#response-format
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    for (let ticket of tickets) {
+      console.log(ticket);
+    }
+  })();
+
+  res.send("NEW HELP MESSAGE");
+});
+
 
 
 app.post("/selectedUsers", (req, res) => {

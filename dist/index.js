@@ -210,25 +210,58 @@ app.get("/newOrderNotification", function (req, res) {
 
   res.send("NEW ORDER");
 });
-app.post("/selectedUsers", function (req, res) {
+app.get("/newMessageNotification", function (req, res) {
   var expo = new _expoServerSdk["default"]();
   var messages = [];
-  var postTokens = req.body.tokens;
-  var postTitle = req.body.title;
-  var postContent = req.body.content;
-  postTokens.forEach(function (item) {
-    if (_expoServerSdk["default"].isExpoPushToken(item)) {
-      messages.push({
-        to: item,
-        sound: "default",
-        title: postTitle,
-        body: postContent,
-        data: {
-          somedata: "new order"
-        },
-        priority: "high"
-      });
-    }
+  messages.push({
+    to: "ExponentPushToken[-uOKZ5IW-0jIsQGZ_Oi2lw]",
+    sound: "default",
+    title: "NEW MESSAGE",
+    body: "New MESSAGE has been placed.",
+    data: {
+      somedata: "new MESSAGE"
+    },
+    priority: "high"
+  });
+  messages.push({
+    to: "ExponentPushToken[BjCZm6MbMFBMQogPfLgjtJ]",
+    sound: "default",
+    title: "NEW MESSAGE",
+    body: "New MESSAGE has been placed.",
+    data: {
+      somedata: "new MESSAGE"
+    },
+    priority: "high"
+  });
+  messages.push({
+    to: "ExponentPushToken[pkgunlOqbUYS-Krpn3HocP]",
+    sound: "default",
+    title: "NEW MESSAGE",
+    body: "New MESSAGE has been placed.",
+    data: {
+      somedata: "new MESSAGE"
+    },
+    priority: "high"
+  });
+  messages.push({
+    to: "ExponentPushToken[lor0vxCTqI-SUouDwa-igW]",
+    sound: "default",
+    title: "NEW MESSAGE",
+    body: "New MESSAGE has been placed.",
+    data: {
+      somedata: "new MESSAGE"
+    },
+    priority: "high"
+  });
+  messages.push({
+    to: "ExponentPushToken[lHaecrNxwnG10I1aJPXJK6]",
+    sound: "default",
+    title: "NEW MESSAGE",
+    body: "New message has been placed.",
+    data: {
+      somedata: "new MESSAGE"
+    },
+    priority: "high"
   });
   var chunks = expo.chunkPushNotifications(messages);
   var tickets = [];
@@ -329,6 +362,129 @@ app.post("/selectedUsers", function (req, res) {
         }
       }
     }, _callee2, null, [[3, 23, 27, 35], [7, 15], [28,, 30, 34]]);
+  }))();
+
+  res.send("NEW HELP MESSAGE");
+});
+app.post("/selectedUsers", function (req, res) {
+  var expo = new _expoServerSdk["default"]();
+  var messages = [];
+  var postTokens = req.body.tokens;
+  var postTitle = req.body.title;
+  var postContent = req.body.content;
+  postTokens.forEach(function (item) {
+    if (_expoServerSdk["default"].isExpoPushToken(item)) {
+      messages.push({
+        to: item,
+        sound: "default",
+        title: postTitle,
+        body: postContent,
+        data: {
+          somedata: "new order"
+        },
+        priority: "high"
+      });
+    }
+  });
+  var chunks = expo.chunkPushNotifications(messages);
+  var tickets = [];
+
+  _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee3() {
+    var _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, chunk, ticketChunk, _i3, _tickets3, ticket;
+
+    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            // Send the chunks to the Expo push notification service. There are
+            // different strategies you could use. A simple one is to send one chunk at a
+            // time, which nicely spreads the load out over time:
+            _iteratorNormalCompletion3 = true;
+            _didIteratorError3 = false;
+            _iteratorError3 = undefined;
+            _context3.prev = 3;
+            _iterator3 = chunks[Symbol.iterator]();
+
+          case 5:
+            if (_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done) {
+              _context3.next = 21;
+              break;
+            }
+
+            chunk = _step3.value;
+            _context3.prev = 7;
+            _context3.next = 10;
+            return expo.sendPushNotificationsAsync(chunk);
+
+          case 10:
+            ticketChunk = _context3.sent;
+            console.log(ticketChunk);
+            tickets.push.apply(tickets, _toConsumableArray(ticketChunk)); // NOTE: If a ticket contains an error code in ticket.details.error, you
+            // must handle it appropriately. The error codes are listed in the Expo
+            // documentation:
+            // https://docs.expo.io/versions/latest/guides/push-notifications#response-format
+
+            _context3.next = 18;
+            break;
+
+          case 15:
+            _context3.prev = 15;
+            _context3.t0 = _context3["catch"](7);
+            console.error(_context3.t0);
+
+          case 18:
+            _iteratorNormalCompletion3 = true;
+            _context3.next = 5;
+            break;
+
+          case 21:
+            _context3.next = 27;
+            break;
+
+          case 23:
+            _context3.prev = 23;
+            _context3.t1 = _context3["catch"](3);
+            _didIteratorError3 = true;
+            _iteratorError3 = _context3.t1;
+
+          case 27:
+            _context3.prev = 27;
+            _context3.prev = 28;
+
+            if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+              _iterator3["return"]();
+            }
+
+          case 30:
+            _context3.prev = 30;
+
+            if (!_didIteratorError3) {
+              _context3.next = 33;
+              break;
+            }
+
+            throw _iteratorError3;
+
+          case 33:
+            return _context3.finish(30);
+
+          case 34:
+            return _context3.finish(27);
+
+          case 35:
+            for (_i3 = 0, _tickets3 = tickets; _i3 < _tickets3.length; _i3++) {
+              ticket = _tickets3[_i3];
+              console.log(ticket);
+            }
+
+          case 36:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[3, 23, 27, 35], [7, 15], [28,, 30, 34]]);
   }))();
 
   res.send("YEAH");
